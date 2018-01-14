@@ -7,4 +7,6 @@ resting is an absolute necessity in life. It is definelty __not__ a good idea to
 Resting just 15-20 minute can increase your productivity by a lot. Therefore, I am making this app that notifies you
 when you should take rest. It should typically alert you every 90 minutes after you start coding.  In future,
 I would also like to add some Stastic so user can view their stats.
+## Screenshots
+<img src="https://github.com/shravan097/TakeBreak/blob/master/screenshot1.png" height="600" width="300">
 
