@@ -10,6 +10,7 @@ import android.widget.Chronometer;
 
 public class MainActivity extends AppCompatActivity {
     private static Chronometer timer;
+    private static long timeWhenStopped;
 
     public MainActivity(){timer=null;}
 
@@ -18,20 +19,61 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button start_timer = (Button)findViewById(R.id.button1);
-        Button stop_timer = (Button) findViewById(R.id.button2);
+
         timer = (Chronometer)findViewById(R.id.chronometer1);
+        final Button start_timer = (Button)findViewById(R.id.button1);
+        final Button stop_timer = (Button) findViewById(R.id.button2);
+        final Button resume_timer = (Button) findViewById(R.id.button3);
+        final Button pause_timer = (Button) findViewById(R.id.button4);
+
+         timeWhenStopped = 0;
+
+
         start_timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MainActivity.timer.setBase(SystemClock.elapsedRealtime());
                 MainActivity.timer.start();
+                start_timer.setVisibility(view.GONE);
+                resume_timer.setVisibility(view.GONE);
+                pause_timer.setVisibility(view.VISIBLE);
+
+
             }
         });
+
+        pause_timer.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        start_timer.setVisibility(view.GONE);
+                        resume_timer.setVisibility(view.VISIBLE);
+                        pause_timer.setVisibility(view.GONE);
+                        timeWhenStopped = timer.getBase() - SystemClock.elapsedRealtime();
+                        timer.stop();
+                        timer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                    }
+                }
+        );
+
+        resume_timer.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        start_timer.setVisibility(view.GONE);
+                        resume_timer.setVisibility(view.GONE);
+                        pause_timer.setVisibility(view.VISIBLE);
+                        timer.start();
+                    }
+                }
+        );
 
         stop_timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                start_timer.setVisibility(view.VISIBLE);
+                resume_timer.setVisibility(view.GONE);
+                pause_timer.setVisibility(view.GONE);
                 MainActivity.timer.setBase(SystemClock.elapsedRealtime());
                 MainActivity.timer.stop();
 

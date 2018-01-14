@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">TakeBreak</string>
     <string name="StartButton">Start Coding!</string>
+    <string name="Stop">Stop</string>
+    <string name="Resume">Resume</string>
+    <string name="Pause">Pause</string>
 </resources>
