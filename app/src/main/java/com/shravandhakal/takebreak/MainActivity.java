@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ReminderUtil.scheduleReminder(this);
+
+
 
 
         timer = (Chronometer)findViewById(R.id.chronometer1);
@@ -91,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void testNotification(View view)
-    {
-        NotificationUtil.remindUser(this);
-    }
+
+
 }

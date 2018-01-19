@@ -100,16 +100,6 @@
                 android:text="@string/Stop"
                 tools:layout_editor_absoluteY="451dp" tools:layout_editor_absoluteX="16dp"
                 tools:ignore="ButtonStyle,HardcodedText"/>
-        <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/button5"
-                android:layout_weight="1"
-                android:onClick="testNotification"
-                android:background="?android:attr/selectableItemBackground"
-                android:text="Test Notification"
-                tools:layout_editor_absoluteX="-19dp" tools:layout_editor_absoluteY="350dp" tools:ignore="ButtonStyle"
-                />
 
     </LinearLayout>
 

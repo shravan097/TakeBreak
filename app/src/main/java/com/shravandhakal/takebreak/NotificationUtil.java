@@ -73,7 +73,14 @@ public class NotificationUtil {
 
 
 
-        private static Bitmap largeIcon(Context context) {
+        public static void clearAllNotifications(Context context) {
+            NotificationManager notificationManager = (NotificationManager)
+                    context.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancelAll();
+        }
+
+
+    private static Bitmap largeIcon(Context context) {
             Resources res = context.getResources();
             Bitmap largeIcon = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher_round);
             return largeIcon;
