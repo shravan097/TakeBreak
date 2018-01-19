@@ -1,23 +1,28 @@
 package com.shravandhakal.takebreak;
 
 import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private static Chronometer timer;
     private static long timeWhenStopped;
+    private Toast mToast;
 
-    public MainActivity(){timer=null;}
+
+    public MainActivity(){timer=null; timeWhenStopped=0;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         timer = (Chronometer)findViewById(R.id.chronometer1);
@@ -26,12 +31,13 @@ public class MainActivity extends AppCompatActivity {
         final Button resume_timer = (Button) findViewById(R.id.button3);
         final Button pause_timer = (Button) findViewById(R.id.button4);
 
-         timeWhenStopped = 0;
-
 
         start_timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(mToast != null) mToast.cancel();
+                mToast = Toast.makeText(getApplicationContext(), R.string.start_toast, Toast.LENGTH_SHORT);
+                mToast.show();
                 MainActivity.timer.setBase(SystemClock.elapsedRealtime());
                 MainActivity.timer.start();
                 start_timer.setVisibility(view.GONE);
@@ -60,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        timer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                         start_timer.setVisibility(view.GONE);
                         resume_timer.setVisibility(view.GONE);
                         pause_timer.setVisibility(view.VISIBLE);
@@ -76,8 +83,16 @@ public class MainActivity extends AppCompatActivity {
                 pause_timer.setVisibility(view.GONE);
                 MainActivity.timer.setBase(SystemClock.elapsedRealtime());
                 MainActivity.timer.stop();
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getApplicationContext()).setContentTitle("My notification").setContentText("Hello World!");
 
             }
         });
+
+    }
+
+    public void testNotification(View view)
+    {
+        NotificationUtil.remindUser(this);
     }
 }
