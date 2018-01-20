@@ -23,9 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ReminderUtil.scheduleReminder(this);
-
-
 
 
         timer = (Chronometer)findViewById(R.id.chronometer1);
@@ -38,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         start_timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ReminderUtil.scheduleReminder(getApplicationContext());
                 if(mToast != null) mToast.cancel();
                 mToast = Toast.makeText(getApplicationContext(), R.string.start_toast, Toast.LENGTH_SHORT);
                 mToast.show();
@@ -55,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ReminderUtil.cancelReminder();
                         start_timer.setVisibility(view.GONE);
                         resume_timer.setVisibility(view.VISIBLE);
                         pause_timer.setVisibility(view.GONE);
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ReminderUtil.scheduleReminder(getApplicationContext());
                         timer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                         start_timer.setVisibility(view.GONE);
                         resume_timer.setVisibility(view.GONE);
@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         stop_timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ReminderUtil.cancelReminder();
+                NotificationUtil.clearAllNotifications(getApplicationContext());
                 start_timer.setVisibility(view.VISIBLE);
                 resume_timer.setVisibility(view.GONE);
                 pause_timer.setVisibility(view.GONE);
@@ -93,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
 
 }
