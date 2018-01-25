@@ -7,4 +7,6 @@
     <string name="break_reminder_notification_title">Break Time!</string>
     <string name="break_reminder_notification">Life is Beautiful! Lets code after taking a short break 🙂 </string>
     <string name="Pause">Pause</string>
+    <string name="Quit">Quit</string>
+    <string name="About">About</string>
 </resources>
