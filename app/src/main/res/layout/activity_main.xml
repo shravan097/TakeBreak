@@ -8,9 +8,11 @@
         tools:context=".MainActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:orientation="vertical">
 
 
+    <include layout="@layout/toolbar" />
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,9 +89,6 @@
                 android:text="@string/Pause"
                 tools:layout_editor_absoluteX="-19dp" tools:layout_editor_absoluteY="350dp" tools:ignore="ButtonStyle"
                 android:visibility="gone"/>
-
-
-
 
         <Button
                 android:layout_width="match_parent"

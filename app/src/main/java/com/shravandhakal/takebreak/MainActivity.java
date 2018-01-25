@@ -4,6 +4,7 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,15 +15,19 @@ public class MainActivity extends AppCompatActivity {
     private static Chronometer timer;
     private static long timeWhenStopped;
     private Toast mToast;
+    private boolean isOn;
 
 
-    public MainActivity(){timer=null; timeWhenStopped=0;}
+    public MainActivity(){timer=null; timeWhenStopped=0; isOn = false;}
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
 
 
         timer = (Chronometer)findViewById(R.id.chronometer1);
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         start_timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isOn=true;
                 ReminderUtil.scheduleReminder(getApplicationContext());
                 if(mToast != null) mToast.cancel();
                 mToast = Toast.makeText(getApplicationContext(), R.string.start_toast, Toast.LENGTH_SHORT);
@@ -81,15 +87,14 @@ public class MainActivity extends AppCompatActivity {
         stop_timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ReminderUtil.cancelReminder();
+                if(isOn)
+                    ReminderUtil.cancelReminder();
                 NotificationUtil.clearAllNotifications(getApplicationContext());
                 start_timer.setVisibility(view.VISIBLE);
                 resume_timer.setVisibility(view.GONE);
                 pause_timer.setVisibility(view.GONE);
                 MainActivity.timer.setBase(SystemClock.elapsedRealtime());
                 MainActivity.timer.stop();
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(getApplicationContext()).setContentTitle("My notification").setContentText("Hello World!");
 
             }
         });
