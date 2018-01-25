@@ -29,7 +29,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         switch(position) {
             case 0:
-                fragment =  PageFragment.newInstance(position);
+                fragment =  PreferenceFragment.newInstance();
                 break;
             case 1:
                 fragment = TimerMainFragment.newInstance();
