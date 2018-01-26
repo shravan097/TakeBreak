@@ -11,9 +11,9 @@ import java.util.concurrent.TimeUnit;
 public class ReminderUtil {
 
 
-    private static int REMINDER_INTERVAL_MINUTES = 1;
-    private static final int REMINDER_INTERVAL_SECONDS = (int) (TimeUnit.MINUTES.toSeconds(REMINDER_INTERVAL_MINUTES));
-    private static final int SYNC_FLEXTIME_SECONDS = Math.round(REMINDER_INTERVAL_SECONDS*80/100);
+    private static int REMINDER_INTERVAL_MINUTES = 60;
+    private static  int REMINDER_INTERVAL_SECONDS = (int) (TimeUnit.MINUTES.toSeconds(REMINDER_INTERVAL_MINUTES));
+    private static  int SYNC_FLEXTIME_SECONDS = Math.round(REMINDER_INTERVAL_SECONDS*80/100);
 
     private static final String REMINDER_JOB_TAG = "break_reminder_tag";
     private static FirebaseJobDispatcher dispatcher;
@@ -54,9 +54,9 @@ public class ReminderUtil {
 
     synchronized public static int changeTime(int minutes,Context context)
     {
-        REMINDER_INTERVAL_MINUTES=minutes;
         if(MainActivity.isOn)
         {
+            update_time(minutes);
             cancelReminder();
             scheduleReminder(context);
             return 1;
@@ -64,5 +64,14 @@ public class ReminderUtil {
         return 0;
 
     }
+
+    synchronized private static void update_time(int minutes)
+    {
+        REMINDER_INTERVAL_MINUTES = minutes;
+        REMINDER_INTERVAL_SECONDS = (int) (TimeUnit.MINUTES.toSeconds(REMINDER_INTERVAL_MINUTES));
+        SYNC_FLEXTIME_SECONDS = Math.round(REMINDER_INTERVAL_SECONDS*80/100);
+
+    }
+
 
 }

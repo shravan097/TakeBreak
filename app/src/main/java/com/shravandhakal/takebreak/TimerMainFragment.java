@@ -3,9 +3,11 @@ package com.shravandhakal.takebreak;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,8 @@ public class TimerMainFragment extends Fragment {
         TimerMainFragment fragment = new TimerMainFragment();
         return fragment;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

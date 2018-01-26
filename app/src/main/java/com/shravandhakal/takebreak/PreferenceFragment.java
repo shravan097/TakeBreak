@@ -3,6 +3,7 @@ package com.shravandhakal.takebreak;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +31,18 @@ public class PreferenceFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Display the newly selected number from picker
-                int x= ReminderUtil.changeTime(Integer.parseInt(et.getText().toString()),getContext());
-                if(x==1)
+                Log.d("onclick", String.format("onClick: %s",et.getText().toString()));
+                if(!(et.getText().toString().equals("")))
                 {
-                    Toast.makeText(getContext(), String.format("Update Sucecssful!\nNew Interval Time is now: %d",
-                            Integer.parseInt(et.getText().toString())),
-                            Toast.LENGTH_LONG).show();
+                    int x= ReminderUtil.changeTime(Integer.parseInt(et.getText().toString()),getContext());
+                    if(x==1)
+                    {
+                        Toast.makeText(getContext(), String.format("Update Sucecssful!\nNew Interval Time is now: %d",
+                                Integer.parseInt(et.getText().toString())),
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
+
             }
         });
         return view;
