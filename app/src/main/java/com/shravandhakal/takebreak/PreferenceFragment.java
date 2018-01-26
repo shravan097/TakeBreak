@@ -41,6 +41,15 @@ public class PreferenceFragment extends Fragment {
                                 Integer.parseInt(et.getText().toString())),
                                 Toast.LENGTH_LONG).show();
                     }
+                    else
+                    {
+                        Toast.makeText(getContext(), "You have to start timer firsts.",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                }else {
+                    Toast.makeText(getContext(), "You have to input something.", Toast.LENGTH_LONG).show();
+                    return;
                 }
 
             }

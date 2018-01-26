@@ -81,6 +81,7 @@ public class TimerMainFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         ReminderUtil.cancelReminder();
+                        isOn=false;
                         start_timer.setVisibility(view.GONE);
                         resume_timer.setVisibility(view.VISIBLE);
                         pause_timer.setVisibility(view.GONE);
@@ -95,6 +96,7 @@ public class TimerMainFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        isOn=true;
                         ReminderUtil.scheduleReminder(getContext());
                         timer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                         start_timer.setVisibility(view.GONE);
@@ -108,8 +110,10 @@ public class TimerMainFragment extends Fragment {
         stop_timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isOn)
+                if(isOn) {
                     ReminderUtil.cancelReminder();
+                    isOn=false;
+                }
                 NotificationUtil.clearAllNotifications(getContext());
                 start_timer.setVisibility(view.VISIBLE);
                 resume_timer.setVisibility(view.GONE);
