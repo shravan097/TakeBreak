@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class TimerMainFragment extends Fragment {
 
     private static Chronometer timer;
     private static long timeWhenStopped;
+    private  long startTime;
+    private boolean wasDestroyed;
     private Toast mToast;
     private Button start_timer;
     private Button stop_timer;
@@ -38,7 +41,9 @@ public class TimerMainFragment extends Fragment {
         start_timer=null;
         stop_timer=null;
         resume_timer=null;
+        startTime=0;
         pause_timer=null;
+        wasDestroyed=false;
     }
 
     public static TimerMainFragment newInstance(){
@@ -51,12 +56,20 @@ public class TimerMainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("onCreate", "onCreateView: Active");
         View view = inflater.inflate(R.layout.timer_page, container, false);
         timer = (Chronometer)view.findViewById(R.id.chronometer1);
          start_timer = (Button)view.findViewById(R.id.button1);
          stop_timer = (Button) view.findViewById(R.id.button2);
          resume_timer = (Button) view.findViewById(R.id.button3);
          pause_timer = (Button) view.findViewById(R.id.button4);
+
+         if(wasDestroyed)
+         {
+             timer.setBase(startTime);
+             timer.start();
+             wasDestroyed=false;
+         }
 
         start_timer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,5 +142,25 @@ public class TimerMainFragment extends Fragment {
 
 
 
+    @Override
+    public void onPause() {
+        Log.d("onPause", "onPause: Active");
+        super.onPause();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("onResume", "onResume: Active");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        wasDestroyed=true;
+        Log.d("onDestroyView", "onDestroyView: Active");
+        startTime=timer.getBase();
+
+    }
 }
