@@ -63,79 +63,86 @@ public class TimerMainFragment extends Fragment {
          stop_timer = (Button) view.findViewById(R.id.button2);
          resume_timer = (Button) view.findViewById(R.id.button3);
          pause_timer = (Button) view.findViewById(R.id.button4);
-
-         if(wasDestroyed)
-         {
-             timer.setBase(startTime);
-             timer.start();
-             wasDestroyed=false;
-         }
-
-        start_timer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isOn=true;
-                ReminderUtil.scheduleReminder(getContext());
-                if(mToast != null) mToast.cancel();
-                mToast = Toast.makeText(getContext(), R.string.start_toast, Toast.LENGTH_SHORT);
-                mToast.show();
-                TimerMainFragment.timer.setBase(SystemClock.elapsedRealtime());
-                TimerMainFragment.timer.start();
-                start_timer.setVisibility(view.GONE);
-                resume_timer.setVisibility(view.GONE);
-                pause_timer.setVisibility(view.VISIBLE);
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            timer.setBase(savedInstanceState.getLong("TimeSaved"));
 
 
+        } else {
+
+            if (wasDestroyed) {
+                timer.setBase(startTime);
+                timer.start();
+                wasDestroyed = false;
             }
-        });
 
-        pause_timer.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+            start_timer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isOn = true;
+                    ReminderUtil.scheduleReminder(getContext());
+                    if (mToast != null) mToast.cancel();
+                    mToast = Toast.makeText(getContext(), R.string.start_toast, Toast.LENGTH_SHORT);
+                    mToast.show();
+                    TimerMainFragment.timer.setBase(SystemClock.elapsedRealtime());
+                    TimerMainFragment.timer.start();
+                    start_timer.setVisibility(view.GONE);
+                    resume_timer.setVisibility(view.GONE);
+                    pause_timer.setVisibility(view.VISIBLE);
+
+
+                }
+            });
+
+            pause_timer.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ReminderUtil.cancelReminder();
+                            isOn = false;
+                            start_timer.setVisibility(view.GONE);
+                            resume_timer.setVisibility(view.VISIBLE);
+                            pause_timer.setVisibility(view.GONE);
+                            timeWhenStopped = timer.getBase() - SystemClock.elapsedRealtime();
+                            timer.stop();
+                            timer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                        }
+                    }
+            );
+
+            resume_timer.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            isOn = true;
+                            ReminderUtil.scheduleReminder(getContext());
+                            timer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                            start_timer.setVisibility(view.GONE);
+                            resume_timer.setVisibility(view.GONE);
+                            pause_timer.setVisibility(view.VISIBLE);
+                            timer.start();
+                        }
+                    }
+            );
+
+            stop_timer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (isOn) {
                         ReminderUtil.cancelReminder();
-                        isOn=false;
-                        start_timer.setVisibility(view.GONE);
-                        resume_timer.setVisibility(view.VISIBLE);
-                        pause_timer.setVisibility(view.GONE);
-                        timeWhenStopped = timer.getBase() - SystemClock.elapsedRealtime();
-                        timer.stop();
-                        timer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                        isOn = false;
                     }
-                }
-        );
+                    NotificationUtil.clearAllNotifications(getContext());
+                    start_timer.setVisibility(view.VISIBLE);
+                    resume_timer.setVisibility(view.GONE);
+                    pause_timer.setVisibility(view.GONE);
+                    TimerMainFragment.timer.setBase(SystemClock.elapsedRealtime());
+                    TimerMainFragment.timer.stop();
 
-        resume_timer.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        isOn=true;
-                        ReminderUtil.scheduleReminder(getContext());
-                        timer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
-                        start_timer.setVisibility(view.GONE);
-                        resume_timer.setVisibility(view.GONE);
-                        pause_timer.setVisibility(view.VISIBLE);
-                        timer.start();
-                    }
                 }
-        );
-
-        stop_timer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isOn) {
-                    ReminderUtil.cancelReminder();
-                    isOn=false;
-                }
-                NotificationUtil.clearAllNotifications(getContext());
-                start_timer.setVisibility(view.VISIBLE);
-                resume_timer.setVisibility(view.GONE);
-                pause_timer.setVisibility(view.GONE);
-                TimerMainFragment.timer.setBase(SystemClock.elapsedRealtime());
-                TimerMainFragment.timer.stop();
-
-            }
-        });
+            });
+        }
 
         return view;
     }
@@ -162,5 +169,15 @@ public class TimerMainFragment extends Fragment {
         Log.d("onDestroyView", "onDestroyView: Active");
         startTime=timer.getBase();
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putLong("TimeSaved",timer.getBase());
+
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

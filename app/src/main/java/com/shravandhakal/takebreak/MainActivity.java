@@ -33,14 +33,17 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Take Break");
 
 
-        // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
-                MainActivity.this));
 
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+
+            // Get the ViewPager and set it's PagerAdapter so that it can display items
+            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+            viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
+                    MainActivity.this));
+
+            // Give the TabLayout the ViewPager
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+            tabLayout.setupWithViewPager(viewPager);
+
 
     }
 
@@ -68,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
+
 
 
 
